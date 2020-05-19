@@ -1,0 +1,90 @@
+﻿#include <iostream>
+#include <string>
+#include <algorithm>
+#include <windows.h> 
+
+
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    std::string numOne, numTwo;
+    std::string a, b, str, str_n, rem;
+    int A[1000], B[1000], mem, tmp;
+    std::cout << "Введите первое число: ";
+    std::cin >> numOne;
+    std::cout << "Введите второе число: ";
+    std::cin >> numTwo;
+    if (numOne.size() >= numTwo.size())
+    {
+        a = numOne;
+        b = numTwo;
+    }
+    else
+    {
+        a = numTwo;
+        b = numOne;
+    }
+    mem = 0;
+    if (a.size() == b.size())
+    {
+        tmp = (a[0] - '0') + (b[0] - '0');
+        if (tmp > 9)
+        {
+            a[0] = '0';
+            b[0] = (tmp % 10) + '0';
+        }
+    }
+    for (int i = 0; i < b.size(); i++)
+    {
+        A[i] = a[a.size() - (i + 1)] - '0' + b[b.size() - (i + 1)] - '0';
+        A[i] += mem;
+        if (A[i] >= 10)
+            mem = A[i] / 10;
+        else
+            mem = 0;
+        str += A[i] % 10 + '0';
+    }
+    reverse(str.begin(), str.end());
+    if (mem == 0)
+    {
+        rem = a.substr(0, a.size() - b.size());
+        rem += str;
+        if (tmp > 9999)
+            std::cout << "1" + rem << std::endl;
+        else
+            std::cout << rem << std::endl;
+    }
+    else if (mem == 1)
+    {
+        rem = a.substr(0, a.size() - b.size());
+        for (int i = 0; i < rem.size() - 1; i++)
+        {
+            B[i] = rem[rem.size() - (i + 1)] - '0' + mem;
+            if (B[i] >= 10)
+                mem = B[i] / 10;
+            else
+                mem = 0;
+            str_n += B[i] % 10 + '0';
+        }
+        reverse(str_n.begin(), str_n.end());
+        if (rem[0] != '9' && mem == 1)
+        {
+            rem[0]++;
+            str_n = rem[0] + str_n;
+        }
+        else if (rem[0] == '9' && mem == 1)
+        {
+            str_n = "10" + str_n;
+        }
+        else if (mem != 1)
+        {
+            str_n = rem[0] + str_n;
+        }
+        rem = str_n + str;
+        std::cout << "Cумма равна " + rem << std::endl;
+    }
+    system("pause");
+    return 0;
+}
